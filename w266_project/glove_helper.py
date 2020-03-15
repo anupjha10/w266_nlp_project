@@ -71,9 +71,15 @@ class Hands(object):
 
         words, W = parse_glove_file(self.zipped_filename, ndim)
         # Set nonzero value for special tokens
+        half = W.shape[0]//2
         mean_vec = np.mean(W[3:], axis=0)
-        for i in range(3):
-            W[i] = mean_vec
+        random_1 = np.mean(W[3:half], axis=0)
+        random_2 = np.mean(W[half:], axis=0)
+        #for i in range(3):
+        #    W[i] = mean_vec
+        W[0] = mean_vec
+        W[1] = random_1
+        W[2] = random_2
         self.W = W
         self.vocab = vocabulary.Vocabulary(words[3:])
         assert(self.vocab.size == self.W.shape[0])
